@@ -29,40 +29,6 @@ const getMsg = ()=>{
 }
 
 /**
- * 添加留言
- * 传入name及content即可，id是自动增长的，dt是时间戳
- * 
- * @param {*} name  用户名
- * @param {*} content  内容
- */
-const addMsg = (name,content)=>{
-    // 分析:如何向一个.json文件中添加一条数据
-    // 思路：
-    // 1. 读出文件内容，转成数组
-    let arr = getMsg()
-    
-    // 2. 用数组的append方法，添加一条记录
-    let obj = {
-        id: arr.length+1,// 它是跟着数组长度变化而增长的
-        name,
-        content,
-        dt:Date.now() // 时间戳
-    }
-
-    arr.push( obj ) //追加到数组的尾部
-    
-    // 3. 把当前的数组写回到文件中去
-    // 采用同步的写文件 writeFile
-    // 把数组转字符串再写入
-    fs.writeFileSync(filePath,JSON.stringify(arr))
-
-    // console.log(arr);
-
-    return arr
-   
-}
-
-/**
  * 删除
  * @param {*} id  要删除的那一条记录的id号
  */
