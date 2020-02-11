@@ -42,18 +42,8 @@ const addMsg = (name,content)=>{
     let arr = getMsg()
     
     // 2. 用数组的append方法，添加一条记录
-    // 数组的最后一个元素如何获取？ [3,4] 要长度减一。
-    // let id = arr.length ? (arr[arr.length-1]["id"] + 1) : 1
-    let id = 1;
-    // 现在数组中有元素，则length肯定是大于0
-    if(arr.length) {
-        // 在最后一个元素的id的基础上加1
-        id = arr[arr.length-1].id + 1
-    } 
-
     let obj = {
-        id,
-        // id: arr.length+1,// 它是跟着数组长度变化而增长的
+        id: arr.length+1,// 它是跟着数组长度变化而增长的
         name,
         content,
         dt:Date.now() // 时间戳
@@ -65,12 +55,33 @@ const addMsg = (name,content)=>{
     // 采用同步的写文件 writeFile
     // 把数组转字符串再写入
     fs.writeFileSync(filePath,JSON.stringify(arr))
+
     // console.log(arr);
+
     return arr
+   
 }
 
-
-
-let rs = addMsg("小张","明天要休息一天")
-let rs1 = addMsg("小陈","想的真美丽！程序员还有休息的时间吗？")
+/**
+ * 删除
+ * @param {*} id  要删除的那一条记录的id号
+ */
+const delMsg = id => {
+    // 自已写代码
+    // 思路：
+    // 1. 取出全部的数据，得到一个数组
+    let arr = getMsg();
+    // 2. 在数组中找出id值为指定参数的那条记录，然后删除它。
+    //  找出索引，
+    let idx = arr.findIndex(item => item.id == id)
+    console.log(idx);
+    //  调用splice
+    //  在一个数组中删除下标为idx的元素
+    arr.splice(idx, 1)
+    // 3. 把删除了记录之后数组写回到文件中
+    // 采用同步的写文件 writeFile
+    // 把数组转字符串再写入
+    fs.writeFileSync(filePath,JSON.stringify(arr))
+}
+delMsg(5); // 删除id=5那一条数据
 

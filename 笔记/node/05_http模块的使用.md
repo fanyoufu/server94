@@ -34,6 +34,7 @@ server.listen(8081, function() {
    - 停止服务： 在小黑窗中按下ctrl+c 停止服务。
    - 重启服务：就是重新运行程序。在小黑窗中运行 `node http1.js`
 3. 更改res.end()的内容，`重启`后，再次观察。
+4. 它的作用是启动一个服务，所以执行代码后并不会跳出来，还保持在运行状态。
 
 
 ## 基本网络概念
@@ -133,11 +134,11 @@ const server = http.createServer((req, res) => {
 
     - req.url。本次请求的地址
 
-      ![1575074964714](asset/1575074964714.png)
+      <img src="asset/1575074964714.png" alt="1575074964714" style="zoom:50%;" />
 
     - req.method。   获取请求行中的请求方法
 
-      ![1575074990817](asset/1575074990817.png)
+      <img src="asset/1575074990817.png" alt="1575074990817" style="zoom:67%;" />
 
     - req.headers。    获取请求头
 
