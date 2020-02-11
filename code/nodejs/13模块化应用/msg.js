@@ -12,6 +12,9 @@ const DATA_FILE = "message.json"
 // 拼接一个绝对路径
 let filePath = path.join(__dirname,DATA_FILE)
 
+/**
+ * 获取message文件中的内容
+ */
 const get = () => {
     // 使用 同步 的方式读
     let rs = fs.readFileSync(filePath,'utf8')  
@@ -71,6 +74,8 @@ const add = (name,content)=>{
 /**
  * 删除
  * @param {*} id  要删除的那一条记录的id号
+ * 
+ * message.json中保存了很多记录
  */
 const del = id => {
     // 自已写代码
