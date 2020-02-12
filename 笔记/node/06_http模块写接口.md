@@ -164,14 +164,14 @@ url:https://mail.qq.com/cgi-bin/frame_html?sid=aLqnlljMxF54DgtW&r=d281ced83329f3
 
 用来对url中的查询字符串这部分进行处理。nodejs中提供了querystring这个核心模块来帮助我们处理这个需求。
 
-地址：https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options
+[地址](https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options)
 
 示例
 
 ```javascript
 const qs= require('querystring');
 let obj = qs.parse('id=18&name=zs');
-console.log(obj)
+console.log(obj) // {id:18, name:"zs"}
 ```
 
 
@@ -256,7 +256,7 @@ server.listen(8088, function() {
 >
 > 要求：通过postman软件的测试。
 
-
+### 预备知识
 
 post类型与get类型的接口区别较大，主要在两个方面：
 
@@ -269,21 +269,31 @@ post类型与get类型的接口区别较大，主要在两个方面：
    - get请求参数在请求行中（附加在url后面）
    - post请求参数在`请求体`中
 
-对于获取post参数就相对复杂一些，主要是用到request对象的两个事件`data`,`end`。
+对于获取post参数就相对复杂一些。它的特点是：
+
+1. 参数在请求体中发给后端
+2. 后端是一段一段接收数据的，并不像get在请求行中传递的数据：直接写在url中的查询字符串内，可以立即通过req.url来解析出来。
+3. 在接收参数的过程中，会涉及request对象的两个事件`data`,`end`。
+   - data事件，每次收到一部分参数数据就会触发一次这个事件。
+   - end事件，全部的参数数据接收完成之后会执行一次。
+
+
+
+
+
+### 基本流程
 
 基本流程是：
 
-1. 在req对象上添加两个事件，用来收集参数
+1. 定义一个空容器result来装参数。
+2. 在req对象上监听data事件。这个事件触发一次，就把当次收到的数据向result中填充一些。
+3. 在req对象上监听end事件。这个事件触发时，就表示整个参数数据接收完成，此时取出容器result中的内容，进行解析，以取出参数。
 
-   1. req.on("data",function(chunk){ })
 
-      每次收到一部分数据就会触发一次这个事件，回调函数也会相应的执行一次。其中的chunk是一个形参（你也可以换个参数名），它是一个buffer。
 
-   2. req.on("end",function(){})
+### 参考代码
 
-2. 解析参数
-
-   1. queryString
+queryString
 
 ```javascript
 // 实现post接口
@@ -294,9 +304,6 @@ const qs = require('querystring')
 
 const server = http.createServer((req,res)=>{
     if(req.url === '/post' && req.method === "POST"){
-        // 如何去收集post的参数？
-        // 注册事件：on(事件名，回调)
-
         // data事件
         // 当收到一部分数据之后，就会执行一次回调函数，可能会执行多次
         // 并且回调中的参数就是本身收到的这一部分数据（buffer格式）
@@ -313,7 +320,7 @@ const server = http.createServer((req,res)=>{
         req.on('end',function(){
             console.log('服务器接收post参数完毕');
             // 最终得到的是一个查询字符串 a=1&b=2
-            // 把查询字符串转成对象？
+            // 把查询字符串转成对象？使用queryString模块
             let obj = qs.parse( result );
             console.log(result ,obj); 
 
@@ -346,4 +353,3 @@ xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
 xhr.send("name="+"imissyou".repeat(100000));
 ```
 
-1

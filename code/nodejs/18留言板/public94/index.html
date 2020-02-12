@@ -66,7 +66,8 @@
     <script>
 
       // 本地ip
-      $.get('http://192.168.43.189:8084/getmsg').then(res=>{
+      // $.get('http://192.168.43.189:8084/getmsg').then(res=>{
+      $.get('http://localhost:8084/getmsg').then(res=>{
         console.log(res);
         // 页面渲染
         if(res.code !== 200) {
