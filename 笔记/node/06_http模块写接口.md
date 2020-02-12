@@ -91,7 +91,7 @@ url:https://mail.qq.com/cgi-bin/frame_html?sid=aLqnlljMxF54DgtW&r=d281ced83329f3
 
 全称：Uniform Resource Locator，统一资源定位符。
 
-作用： 定位资源(css,html,js,png, avi......)。
+作用： 定位资源(css,html,js,png, avi，接口......)。
 
 格式：`协议://主机地址[:端口]/路径?查询字符串#锚点`
 

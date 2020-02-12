@@ -6,6 +6,10 @@
 
 const http = require('http')
 
+// 引入自定义模块 ./
+// 用来操作message.json文件 
+const msg = require('./msg')
+
 const server = http.createServer((req,res)=>{
     // 约定请求的地址 和方式
     if(req.url === "/getmsg" && req.method === "GET") {
@@ -13,8 +17,8 @@ const server = http.createServer((req,res)=>{
         console.log(req.method);
         
         // 假设经过很多运算，得到数据
-        let data = [{id:1,name:"张三",content:"寒雨连江夜入吴",dt:1234353322}]
-        
+        // let data = [{id:1,name:"张三",content:"寒雨连江夜入吴",dt:1234353322}]
+        let data = msg.get()
         // 如何返回数据？
         // res.end(只能是  字符串  或buffer)
         // 需要把数转成字符串
@@ -23,7 +27,6 @@ const server = http.createServer((req,res)=>{
         res.setHeader('content-type', 'application/json;charset=utf-8')
         res.end(JSON.stringify(data))
     }else {
-
         res.end('404')
     }
 })
