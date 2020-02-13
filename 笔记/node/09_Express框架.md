@@ -68,7 +68,7 @@ app.listen(3000, () => console.log('app listening on port 3000!'))
 说明：
 
 - app.get('/')相当于添加个事件监听：当用户以get方式求"/"时，它后面的回调函数会执行，其回调函数中的req,res与前面所学http模块保持一致。
-- res.send()是exprss提供的方法，用于结束本次请求。类似的还有res.json(),res.sendFile() 。
+- res.send()是exprss框架给res对象补充提供的方法（http模块中的res是没有这个方法吧。），用于结束本次请求。类似的还有res.json(),res.sendFile() 。
 
 
 
