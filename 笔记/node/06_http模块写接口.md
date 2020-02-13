@@ -182,7 +182,7 @@ console.log(obj) // {id:18, name:"zs"}
 
 > 地址：localhost:8080/getmsg?id=2&name=ammey
 >
-> 功能：获取用户传入的编号，并以json字符串格式返回
+> 功能：获取用户传入的参数，并以json字符串格式返回
 >
 > 示例：
 >
@@ -242,14 +242,14 @@ server.listen(8088, function() {
 
 假设我们自己就是一名后端程序员，现在要实现一个post类型的接口。具体要求如下：
 
-> 地址：localhost:8000/post
+> 地址：localhost:8080/addmsg
 >
 > 功能：获取用户传入的参数，并以json字符串格式返回，在返回的信息中要加上时间戳.
 >
 > 示例：
 >
 > ```
-> 接口地址:localhost:8080/post
+> 接口地址:localhost:8080/addmsg
 > 参数：name=filex&age=30;
 > 返回:{name:filex,age:30,_t:1563265441778}
 > ```
@@ -262,12 +262,12 @@ post类型与get类型的接口区别较大，主要在两个方面：
 
 1. 类型不同
 
-   对于类型不同还比较好判断，我们可以通过 req.method 来获取
+   对于类型不同还比较好判断，我们可以通过 req.method 来获取（GET,POST）
 
 2. 传参不同
 
-   - get请求参数在请求行中（附加在url后面）
-   - post请求参数在`请求体`中
+   - get请求参数在请求行中（附加在url后面）,内容比较少。
+   - post请求参数在`请求体`中。内容比较大。
 
 对于获取post参数就相对复杂一些。它的特点是：
 
