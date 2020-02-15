@@ -1,6 +1,8 @@
 
 
-## Express框架
+express框架
+
+## 基本介绍 
 
 ### Express 介绍
 
@@ -68,11 +70,12 @@ app.listen(3000, () => console.log('app listening on port 3000!'))
 说明：
 
 - app.get('/')相当于添加个事件监听：当用户以get方式求"/"时，它后面的回调函数会执行，其回调函数中的req,res与前面所学http模块保持一致。
-- res.send()是exprss框架给res对象补充提供的方法（http模块中的res是没有这个方法吧。），用于结束本次请求。类似的还有res.json(),res.sendFile() 。
+- res.send()是exprss框架给res对象补充提供的方法（http模块中的res是没有这个方法的。），用于结束本次请求。类似的还有res.json(),res.sendFile() 。
+- express 框架会增强req,res的功能
 
 
 
-### 托管静态资源
+## 托管静态资源
 
 参考文档：http://expressjs.com/en/starter/static-files.html
 
@@ -90,7 +93,7 @@ http://localhost:3000/js/index.js
 
 在前面学习http模块时，我们已经实现了这些功能了，但是要写很多代码，现在使用express框架，只需一句代码就可以搞定了，这句代码是  `express.static('public')`
 
-#### 忽略前缀
+### 忽略前缀
 
 ```javascript
 // 加载 Express
@@ -112,7 +115,7 @@ app.listen(3000, () => console.log('app listening on port 3000!'))
 
 - 在public下新建index.html，可以直接访问到。
 
-#### 限制前缀
+### 限制前缀
 
 ```
 // 限制访问前缀
@@ -121,13 +124,13 @@ app.use('/public', express.static('public'))
 
 这意味着想要访问public下的内容，必须要在请求url中加上/public
 
-### 路由
+## 路由
 
 参考文档：http://expressjs.com/en/starter/basic-routing.html
 
 路由（**Routing**）是由一个 **URL**（或者叫路径标识）和一个特定的 **HTTP 方法**（GET、POST 等）组成的，涉及到应用如何处理响应客户端请求。每一个路由都可以有一个或者多个处理器函数，当匹配到路由时，这些个函数将被执行。
 
-#### 格式
+### 格式
 
 ```javascript
 const app = express();
@@ -149,32 +152,6 @@ app.METHOD(PATH, HANDLER)
   | http://localhost:8080/index.html?a=1&b=2  | /index.html          |
 
 - `HANDLER` 是当路由匹配到时需要执行的处理函数。`（req,res）=>{   }`
-
-#### 示例
-
-- 路径
-  - http://127.0.0.1:3000/xxxx
-  - app.get('路径')
-  - 路径：域名后面的path
-- 处理 get 请求
-
-```javascript
-// 当你以 GET 方法请求 / 的时候，执行对应的处理函数
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
-
-// 当你以 GET 方法请求 /file.html 的时候，执行对应的处理函数
-app.get('/file.html', function (req, res) {
-  res.send('file.html');
-  res.sendfile('文件路径'）
-  // 这里的文件路径必须是绝对路径
-})
-```
-
-注意
-
-- send()，sendfile()是express框架提供的方法。
 
 ### 写get接口
 
@@ -231,9 +208,9 @@ post接口与get请求不同在于：它的参数一般是通过请求体来传�
 
 获取post普通键值对数据，要通过第三方模块`body-parser`来解析。
 
-具体来说当content-type为x-www-form-urlencoded时，表示上传的普通简单的键值对 。如果通过postman测试的话，对应的设置如下：
+具体来说当content-type为x-www-form-urlencoded时，表示上传的普通简单键值对 。如果通过postman测试的话，对应的设置如下：
 
-<img src="node-讲义.assets/1570625676948.png" alt="1570625676948" style="zoom:50%;" />
+<img src="asset/1570625676948.png" alt="1570625676948" style="zoom:50%;" />
 
 
 
@@ -245,7 +222,7 @@ npm install body-parser
 
 在 express4中，已经预先下载安装过了（在npm install exprss 时，就已经安装了body-parse，你可以在node_modules中查看到），这样就可以直接使用了
 
-<img src="node-讲义.assets/1570625703715.png" alt="express4已经包含了body-parse模块" style="zoom:50%;" />
+<img src="asset/1570625703715.png" alt="express4已经包含了body-parse模块" style="zoom:50%;" />
 
 ##### 步骤
 
@@ -363,7 +340,233 @@ app.post('/postJSON',(req,res)=>{
 
 
 
-### RESTful接口
+## 接口传参
+
+### 理论
+
+我们一般使用ajax技术向接口传参，请求有三个部分：
+
+- 请求行： 保存了请求方式，地址，可以以参数字符串的格式附加一部分数据。
+
+- 请求头：它可以附加很多信息，其中content-type用来约定请求体中保存的数据格式。
+
+  - 常见有三种取值：
+
+    | content-type的值                 | 表示请求体的数据格式 | 示例          |
+    | -------------------------------- | -------------------- | ------------- |
+    | application/x-www-form-urlencode | 普通键值对象         | a=2&c=1       |
+    | application/json                 | json对象             | {a:1,b:{c:1}} |
+    | multipart/form-data              | 上传文件             | file          |
+
+- 请求体:  本次请求携带的参数
+
+
+
+从前端向后端接口传参数，有两种途径：
+
+- 方法一：请求行。常见方式如下：
+  - 使用ajax技术，通过get方式传参。
+  - 在浏览器地址栏中输入接口地址并补充上查询字符串。
+- 方法二：请求体
+  - ajax中的post,put,delete可以从请求体中进行传参。
+
+另外，请求头中的**content-type**用来告之服务器应该以何种方式去解析请求体中的数据。
+
+
+
+ 从请求行中传参 总结如下：
+
+| 传参方式 | 前端 content-type                | 后端框架express                                              |
+| -------- | -------------------------------- | ------------------------------------------------------------ |
+| 请求行   | get方式                          | req.query                                                    |
+| 请求体   | application/x-www-form-urlencode | app.use(**bodyParser.urlendcode()**); req.body               |
+| 请求体   | application/json                 | app.use(**bodyParser.json()**); req.body                     |
+| 请求体   | multipart/form-data              | 1. 引入包  const multer = require('multer'); <br> 2. 配置app.post('/apiname', **upload.single()**, **req.body**) |
+
+
+
+### 示例 
+
+#### 前端
+
+用jquery的ajax来发请求
+
+
+
+```html
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <title>Document</title>
+ </head>
+ <body>
+     <button id="btn_keyvalue"> post-普通键值对</button>
+     <br>
+     <button id="btn_json"> post-json</button>
+     <form id="myform">
+         <input type="text" name="title">
+         <input type="file" name="cover">
+     </form>
+     <button id="btn_formdata"> post-formdata</button>
+     <script src="./jquery-1.8.1.js"></script>
+
+     <script>
+         $('#btn_keyvalue').click(function(){
+            $.ajax({
+                type:'post',
+                url:'http://localhost:3000/post',
+                data:{a:1,b:2},
+                // data:{
+                //     name:"abc",
+                //     address:{
+                //         "a":1,
+                //         "b":2,
+                //         "info":"c"
+                //     }
+                // },
+                success(res){
+                    console.log(res);
+                    
+                }
+            })
+
+        })
+        var obj = {
+                    name:"abc",
+                    address:{
+                        "a":1,
+                        "b":2,
+                        "info":"c"
+                    }
+                }
+        $('#btn_json').click(function(){
+            $.ajax({
+                type:'post',
+                url:'http://localhost:3000/postJSON',
+                // contentType: false,
+                contentType: "application/json; charset=UTF-8",
+                data:JSON.stringify(obj),
+                success(res){
+                    console.log(res);
+                    
+                }
+            })
+
+        })
+        $('#btn_formdata').click(function(){
+            var fd= new FormData(document.getElementById('myform'));
+            $.ajax({
+                type:'post',
+                url:'http://localhost:3000/admin/article_publish',
+                contentType: false,
+                processData:false,
+                data:fd,
+                success(res){
+                    console.log(res);
+                    
+                }
+            })
+
+        })
+     </script>
+ </body>
+ </html>
+```
+
+
+
+#### 后端
+
+```
+// 实现get接口
+
+const express = require('express')
+const app = express();
+
+app.use(express.static('public'))
+// 引入bodyParse包
+const bodyParser = require('body-parser')
+// 使用包. 则在后续的post请求中
+// 会自动加入req.body属性，这个属性中就包含了post请求所传入的参数
+// 处理普通的键值对格式
+// Content-Type: application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:false}))
+
+// 处理JSON格式
+// Content-Type: application/json;
+app.use(bodyParser.json())
+
+// 引入multer包
+const multer = require('multer');
+
+// 配置一下multer
+// 如果本次post请求涉及文件上传，则上传到uploads这个文件夹下
+// Content-Type: multipart/form-data;
+var upload = multer({ dest: 'uploads/' })
+
+// formDate
+app.post('/admin/article_publish',upload.single('cover'),(req,res)=>{
+    
+    //upload.single('cover')
+    // 这里的cover就是在页面中表单元素中的name
+    // <input type="file" name="cover" />
+    // 把要上传文件放在指定的目录
+    console.log(req.file);
+    // 其它参数，还是在req.body中找
+    console.log(req.body);
+
+    res.json({code:200,msg:'上传成功',info:req.file.path})
+
+    
+})
+
+// 普通post 键值对
+app.post('/post',(req,res)=>{
+    // 希望在后端收到post传参
+    console.log(req.body);
+
+    let obj = req.body
+    obj._t = Date.now();
+    
+    res.json(obj)
+})
+
+// 用来JSON格式的数据
+// Content-Type: application/json;
+app.post('/postJSON',(req,res)=>{
+    // 希望在后端收到post传参
+    console.log(req.body);
+    
+    // res.send('/postJSON')
+    res.json( req.body )
+})
+
+// 实现接口，返回所传入的参数，并附上上时间戳
+app.get('/getapi',(req,res)=>{
+    // 通过 req.query快速获取传入的参数
+    console.log(req.query);
+    let obj = req.query
+    
+    obj._t = Date.now(); 
+    res.json( obj )
+})
+
+
+
+app.listen(3000,()=>{
+    console.log(3000);
+    
+})
+```
+
+
+
+
+
+## RESTful接口
 
 网络应用程序，分为前端和后端两个部分。当前的发展趋势，就是前端设备层出不穷（手机、平板、桌面电脑、其他专用设备…）。因此，必须有一种统一的机制，方便不同的前端设备与后端进行通信。这导致API构架的流行，甚至出现"APIFirst"的设计思想。RESTful API是目前比较成熟的一套互联网应用程序的API设计理论。
 
@@ -464,241 +667,7 @@ app.listen(8080,()=>{
 
 ```
 
-
-
-## 接口传参小结
-
-
-
-### 理论
-
-ajax请求也是http协议，请求有三个部分：
-
-- 行： 保存了请求方式，地址，
-- 头：content-type:
-- 体:  本次请求携带的参数
-
-![1575360799112](asset/1575360799112.png)
-
-
-
-从前端向后端接口传参数，有两种途径：
-
-- 方法一：请求行。常见方式如下：
-  - ajax中的get方式，它默认就是在请求行中传参。
-  - 在浏览器地址栏中输入接口地址并补充上查询字符串。
-- 方法二：请求体
-  - ajax中的post,put,delete可以从请求体中进行传参。
-
-另外，请求头中的**content-type**用来告之服务器应该以何种方式去解析请求体中的数据。
-
-
-
- 从请求行中传参 总结如下：
-
-| 传参方式 | 前端                                                         | 后端                                                         |
-| -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 请求行   | ajax请求，get方式，地址：http://localhost:8080/apiname?name=a&content=haha | app.get('/apiname',(req,res)=>{  console.log(**req.query**) }) |
-| 请求体   | ajax请求，post方式，地址：http://localhost:8080/apiname；在请求头中检查**content-type**:application/x-www-form-urlencode({extend:false})                             ，此时是以普通键值对传递参数 | 使用app.use(**bodyParser.urlendcode()**); app.post('/apiname',()=>{**req.body**}) |
-| 请求体   | ajax请求，post方式，地址：http://localhost:8080/apiname；   在请求头中检查     **content-type**:application/json)   此时是以json格式上传数据 | 使用app.use(**bodyParser.json()**); app.post('/apiname',()=>{**req.body**}) |
-| 请求体   | ajax请求，post方式，地址：http://localhost:8080/apiname；        **content-type**:multipart/form-data) 表单，文件上传 | // 1. 引入包  const multer = require('multer'); // 2. 配置app.post('/apiname', **upload.single()**, **req.body**) |
-
-请求行
-
-<img src="node-讲义.assets/1575290862200.png" alt="1575290862200" style="zoom:50%;" />
-
-请求体： 普通字符串 查询字符串
-
-<img src="node-讲义.assets/1575291057497.png" alt="1575291057497" style="zoom:50%;" />
-
-请求体： 表单文件
-
-<img src="node-讲义.assets/1575292550860.png" alt="1575292550860" style="zoom:50%;" />
-
-
-
-请求体： json格式`axios`
-
-<img src="node-讲义.assets/1575291288933.png" alt="1575291288933" style="zoom:50%;" />
-
-
-
-### 用jquery的ajax来发请求
-
-前端
-
-```
- <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <title>Document</title>
- </head>
- <body>
-     <button id="btn_keyvalue"> post-普通键值对</button>
-     <br>
-     <button id="btn_json"> post-json</button>
-     <form id="myform">
-         <input type="text" name="title">
-         <input type="file" name="cover">
-     </form>
-     <button id="btn_formdata"> post-formdata</button>
-     <script src="./jquery-1.8.1.js"></script>
-
-     <script>
-         $('#btn_keyvalue').click(function(){
-            $.ajax({
-                type:'post',
-                url:'http://localhost:3000/post',
-                data:{a:1,b:2},
-                // data:{
-                //     name:"abc",
-                //     address:{
-                //         "a":1,
-                //         "b":2,
-                //         "info":"c"
-                //     }
-                // },
-                success(res){
-                    console.log(res);
-                    
-                }
-            })
-
-        })
-        var obj = {
-                    name:"abc",
-                    address:{
-                        "a":1,
-                        "b":2,
-                        "info":"c"
-                    }
-                }
-        $('#btn_json').click(function(){
-            $.ajax({
-                type:'post',
-                url:'http://localhost:3000/postJSON',
-                // contentType: false,
-                contentType: "application/json; charset=UTF-8",
-                data:JSON.stringify(obj),
-                success(res){
-                    console.log(res);
-                    
-                }
-            })
-
-        })
-        $('#btn_formdata').click(function(){
-            var fd= new FormData(document.getElementById('myform'));
-            $.ajax({
-                type:'post',
-                url:'http://localhost:3000/admin/article_publish',
-                contentType: false,
-                processData:false,
-                data:fd,
-                success(res){
-                    console.log(res);
-                    
-                }
-            })
-
-        })
-     </script>
- </body>
- </html>
-```
-
-
-
-后端
-
-```
-// 实现get接口
-
-const express = require('express')
-const app = express();
-
-app.use(express.static('public'))
-// 引入bodyParse包
-const bodyParser = require('body-parser')
-// 使用包. 则在后续的post请求中
-// 会自动加入req.body属性，这个属性中就包含了post请求所传入的参数
-// 处理普通的键值对格式
-// Content-Type: application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended:false}))
-
-// 处理JSON格式
-// Content-Type: application/json;
-app.use(bodyParser.json())
-
-// 引入multer包
-const multer = require('multer');
-
-// 配置一下multer
-// 如果本次post请求涉及文件上传，则上传到uploads这个文件夹下
-// Content-Type: multipart/form-data;
-var upload = multer({ dest: 'uploads/' })
-
-// formDate
-app.post('/admin/article_publish',upload.single('cover'),(req,res)=>{
-    
-    //upload.single('cover')
-    // 这里的cover就是在页面中表单元素中的name
-    // <input type="file" name="cover" />
-    // 把要上传文件放在指定的目录
-    console.log(req.file);
-    // 其它参数，还是在req.body中找
-    console.log(req.body);
-
-    res.json({code:200,msg:'上传成功',info:req.file.path})
-
-    
-})
-
-// 普通post 键值对
-app.post('/post',(req,res)=>{
-    // 希望在后端收到post传参
-    console.log(req.body);
-
-    let obj = req.body
-    obj._t = Date.now();
-    
-    res.json(obj)
-})
-
-// 用来JSON格式的数据
-// Content-Type: application/json;
-app.post('/postJSON',(req,res)=>{
-    // 希望在后端收到post传参
-    console.log(req.body);
-    
-    // res.send('/postJSON')
-    res.json( req.body )
-})
-
-// 实现接口，返回所传入的参数，并附上上时间戳
-app.get('/getapi',(req,res)=>{
-    // 通过 req.query快速获取传入的参数
-    console.log(req.query);
-    let obj = req.query
-    
-    obj._t = Date.now(); 
-    res.json( obj )
-})
-
-
-
-app.listen(3000,()=>{
-    console.log(3000);
-    
-})
-```
-
-
-
-
+1
 
 ## 中间件技术
 
