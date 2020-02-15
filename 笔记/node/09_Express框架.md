@@ -200,7 +200,7 @@ app.listen('8088', () => {
 
 post接口与get请求不同在于：它的参数一般是通过请求体来传递的。根据传递的参数的格式不同，分成三种情况来说
 
-- 传递普通键对
+- 传递普通键值对
 - 传递form表单（涉及文件上传）
 - 传递json
 
@@ -220,7 +220,7 @@ post接口与get请求不同在于：它的参数一般是通过请求体来传�
 npm install body-parser
 ```
 
-在 express4中，已经预先下载安装过了（在npm install exprss 时，就已经安装了body-parse，你可以在node_modules中查看到），这样就可以直接使用了
+在 express4中，已经预先下载安装过了（在npm install exprss 时，就已经安装了body-parser，你可以在node_modules中查看到），这样就可以直接使用了
 
 <img src="asset/1570625703715.png" alt="express4已经包含了body-parse模块" style="zoom:50%;" />
 
@@ -247,7 +247,7 @@ app.post("/add",function(req,res){
 - `extended: false`：表示使用系统模块querystring来处理传入的参数，也是官方推荐的
 - `extended: true`：表示使用第三方模块qs来处理传入的参数.
 
-#### 文件上传
+#### form-data文件上传
 
 如果post涉及文件上传操作，则会要额外使用第三方`multer`这个包（不属于express）来获取上传的信息。
 
@@ -300,7 +300,7 @@ app.post("postfile",upload.single('cover'), function(req,res){
 
 在post传递参数时，如果要传入的参数比较复杂，则可以使用json格式上传。
 
-```
+```javascript
 var data = {
  name:"abc",
  address:{
@@ -346,7 +346,7 @@ app.post('/postJSON',(req,res)=>{
 
 我们一般使用ajax技术向接口传参，请求有三个部分：
 
-- 请求行： 保存了请求方式，地址，可以以参数字符串的格式附加一部分数据。
+- 请求行： 保存了请求方式，地址，可以以查询字符串的格式附加一部分数据。
 
 - 请求头：它可以附加很多信息，其中content-type用来约定请求体中保存的数据格式。
 
@@ -358,7 +358,13 @@ app.post('/postJSON',(req,res)=>{
     | application/json                 | json对象             | {a:1,b:{c:1}} |
     | multipart/form-data              | 上传文件             | file          |
 
-- 请求体:  本次请求携带的参数
+- 请求体:  本次请求携带的参数。至于这参数到了后端应该如何解析出来，由content-type来决定。
+
+
+
+<img src="asset/image-20200215155208380.png" alt="image-20200215155208380" style="zoom:80%;" />
+
+
 
 
 
