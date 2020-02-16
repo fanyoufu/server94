@@ -364,7 +364,35 @@ app.post('/postJSON',(req,res)=>{
 
 <img src="asset/image-20200215155208380.png" alt="image-20200215155208380" style="zoom:80%;" />
 
+接口的规则是由后端来定的，它会约定接口的名字，参数，格式，方式。
 
+名字: /api
+
+参数：name: 用户名，pwd:密码，avatar头像文件。
+
+格式：formdata.
+
+方式：post
+
+
+
+名字: /api2
+
+参数：name: 用户名，pwd:密码
+
+格式：application/x-www-form-encoded (普通键值对)
+
+方式：post
+
+
+
+名字: /api3
+
+参数：name: 用户名，pwd:密码
+
+格式：application/json
+
+方式：post
 
 
 
