@@ -10,6 +10,10 @@
     <div>
       <button id="btnGet">get请求</button>
       <button id="btnGet8080">getapi请求8080</button>
+      <button id="btnGet8081">getapi请求8081</button>
+      <button id="btnPost8081">post请求8081</button>
+      <button id="btnPostok">post请求Postok</button>
+      
     </div>
     <script src="./jquery-1.8.1.js"></script>
 
@@ -45,6 +49,38 @@
         })
         // $.get("http://localhost:8080/getapi8080")
       })
+
+      $("#btnGet8081").click(function(){
+        // 跨域的
+       
+        $.get("http://localhost:8081/getapi8081").then(res=>{
+          console.log(res);
+          
+        })
+      })
+
+      $("#btnPost8081").click(function(){
+        // 跨域的
+       
+        $.post("http://localhost:8081/post8081").then(res=>{
+          console.log(res);
+          
+        })
+      })
+      $("#btnPostok").click(function(){
+        // 跨域的
+       
+        $.post("http://localhost:8081/postok").then(res=>{
+          console.log(res);
+          
+        })
+      })
+
+      
+
+      
+
+
     </script>
   </body>
 </html>

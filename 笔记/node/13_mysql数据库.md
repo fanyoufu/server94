@@ -4,13 +4,11 @@
 
 ### 什么是数据库
 
-database
-
-保存和管理数据的仓库，数据库。
+`database`:保存和管理数据的仓库，数据库。
 
 什么是数据：文件，图片，视频，订单，用户名，密码等等。这些数据都需要有专门的地方来保存和管理。
 
-在我们没有学习数据库技术之前，我们使用的数据都是以文件系统（db.json）的方式保存的。我们需要一个专门的软件来管理我们的数据, 这就是数据库。
+在我们没有学习数据库技术之前，我们使用的数据都是以文件系统（db.json）的方式保存的。我们需要一个**专门的软件来管理我们的数据**, 这就是数据库。
 
 数据库软件可以大致分成两大阵营
 
@@ -20,7 +18,7 @@ database
   -  Sql server
   - DB2
 - 非关系型数据库
-  - redis 键值存储数据库
+  - **redis** 键值存储数据库
   - HBaise列存储数据库
   - **mongodb** 面向文档数据库
   - neo4j 图形数据库
@@ -54,8 +52,6 @@ database
 | 数据库       | excel文件                |
 | 数据表       | excel文件中的某一个sheet |
 | 表结构：字段 | sheet中的表头：列        |
-
-
 
 
 
@@ -94,11 +90,29 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
 
 ## phpstudy-mysql-front中操作数据库
 
+phpstudy[下载](https://www.xp.cn/) ，安装
+
 最新版(2018)需要额外去装一下SQL_front
 
+### 启动phpstudy中的mysql
 
+开启了mysql服务器（这个服务器就在你的电脑上，理解我们平时开启小黑窗）
+
+接下来就是要连接上这个mysql服务器。
+
+<img src="asset/image-20200217095648896.png" alt="image-20200217095648896" style="zoom:50%;" />
+
+推荐使用sql_front来连接mysql服务器。你也可以使用phpMyAdmin去连接mysql服务器。
+
+<img src="asset/image-20200217115545847.png" alt="image-20200217115545847" style="zoom:50%;" />
+
+### 安装sql_front管理工具
 
 <img src="asset/mysql.png" alt="mysql" style="zoom:50%;" />
+
+### 启动sql_front
+
+
 
 ### 建立连接
 
@@ -117,6 +131,8 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
   <img src="asset/1575617520761.png" alt="1575617520761" style="zoom:50%;" />
 
 ### 新建数据库
+
+看到如下内容，就表示，你通过mysql_front连接上了你的数据库服务器了。
 
 <img src="asset/1566217626323.png" alt="1566217626323" style="zoom: 50%;" />
 
@@ -149,6 +165,17 @@ MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，
 ### 添加数据
 
 ![1566346995067](asset/1566346995067.png)
+
+
+
+### 连接不上怎么办？
+
+- 是否打开了mysql服务器。
+- sql_front连不上。
+- 使用phpAdmin试一试 。 <img src="asset/image-20200217115545847.png" alt="image-20200217115545847" style="zoom:50%;" />
+- 最后，可以使用远程的数据库。我在阿里上买的数据库。
+  - url: https://dms-net.aliyun.com/?spm=cp-aliyun-com.10698423.101.d4.60517231LcLLDp&host=bdm289537170.my3w.com&port=3306&dbType=MySQL&userName=bdm289537170
+  - <img src="asset/image-20200217120334622.png" alt="image-20200217120334622" style="zoom:80%;" />
 
 ## SQL语句
 
