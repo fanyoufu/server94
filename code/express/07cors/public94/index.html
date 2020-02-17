@@ -25,10 +25,10 @@
       }
     </script> -->
     <!-- ?callback=fn 传递参数给后端：告诉后端，请把回来的函数名用 fn -->
-    <!-- <script src="http://localhost:8080/getapi8080?callback=fn"> -->
+    <!-- <script src="http://localhost:8080/getapi8080?callback=fn">
     
-    
-    </script>
+    // src请求回来的，响应体，会自动放在这里当作js代码来执行。
+    </script> -->
     <script>
       $("#btnGet").click(function(){
         $.get("http://localhost:8084/get")
@@ -40,9 +40,8 @@
           url:"http://localhost:8080/getapi8080",
           type:'get',
           dataType:"jsonp" /*以jsonp的方式去请求*/
-        }).then(res=>{
-          console.log(res);
-          
+        }).then(function(res){
+          console.log(res)
         })
         // $.get("http://localhost:8080/getapi8080")
       })
