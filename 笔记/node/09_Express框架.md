@@ -610,7 +610,7 @@ REST（Representational State Transfer）表述性状态转换，REST指的是�
 
 
 
-#### 普通接口设计
+### 普通接口设计
 
 例如：
 接口名：localhost:8080/getarticle
@@ -629,7 +629,7 @@ REST（Representational State Transfer）表述性状态转换，REST指的是�
 类型：post
 功能：编辑文章
 
-#### RESTful接口设计
+### RESTful接口设计
 
 区别上述功能,主要依靠接口名称和请求类型而在restful设计中，它们应该是这样的：
 接口名：localhost:8080/articles

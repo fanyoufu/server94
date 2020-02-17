@@ -7,6 +7,9 @@ const multer = require('multer')
 //  配置
 const upload = multer({dest:'avatars/'}) 
 
+// 自定义的模块，用来操作mysql
+const sqlutil = require('./utils/sqlutil')
+
 //1. 引入session包
 const session = require('express-session');
 
@@ -53,12 +56,94 @@ app.post('/user_add',upload.single("avatar"),(req,res)=>{
     })
 })
 
-// 用户登陆
+
+// 实现一个接口来做用户注册功能 - 添加到数据库
+// 用户在页面上，传递：用户名，密码，头像
+// 在后端：
+// 1. 把他的头像文件保存起来.
+//    放在avatars目录下
+// 2. 把用户的信息保存添加到数据库
+
+app.post('/user_add_sql',upload.single("avatar"),(req,res)=>{
+    // console.log(req.file)
+    // console.log(req.body)
+    let {name, pwd} = req.body;
+    let avatarUrl = req.file.path;
+
+    //调用自定义模块，实现添加方法
+    // user.add(name,pwd,avatarUrl)
+    // 添加一个用户的sql
+    let sqlStr = `insert into users(name,pwd) values("${name}","${pwd}")`
+    sqlutil.doSQL(sqlStr,(err,data)=>{
+        if(err){
+            res.send({
+                code: 500,
+                msg: "服务器开小差了"
+            })
+        }else {
+            // console.log(data)
+            if(data.affectedRows === 1){
+                res.send({
+                    code: 200,
+                    msg: "用户注册成功"
+                })
+            } else {
+                res.send({
+                    code: 400,
+                    msg: "用户注册失败"
+                })
+            }
+        }
+    })
+})
+
+// 用户登陆: 连接mysql数据库来做验证
 // 约定:普通键值对传参
 // 参数：name, pwd
 // 返回值：
 //  {code:200,msg:'登陆成功'}
 //  {code:400,msg:'用户名密码错误'}
+
+
+app.post('/user_login_sql',(req,res)=>{
+    // 1. 获取通过post传过来的用户参数：name,pwd
+    let {name,pwd} = req.body; 
+    // 2. 根据 name,pwd去数据库中进行搜索，如果找到这个人
+    // 就是登陆成功。
+    let sqlStr = `select id,name,pwd from users where name="${name}" and pwd="${pwd}"`
+    console.log(sqlStr);
+    sqlutil.doSQL(sqlStr,(err,data)=>{
+        if(err){
+            // 执行sql出错
+            res.send( {
+                code:500,
+                msg:"服务器停止工作了"
+            })
+        }
+        else {
+            console.log(data)
+            if(data.length > 0) {
+                // 登陆成功
+                // 用通过session 发凭证
+                req.session.isLogin = true;
+                req.session.name = name
+
+                // 会给浏览器设置cookie,cookie的值就是sessionID
+
+                res.send( {
+                    code:200,
+                    msg:"登陆成功"
+                })  
+            } else {
+                res.send( {
+                    code:400,
+                    msg:"登陆失败"
+                })
+            }
+        }
+    } )
+})
+
 
 app.post('/user_login',(req,res)=>{
     // 1. 获取通过post传过来的用户参数：name,pwd

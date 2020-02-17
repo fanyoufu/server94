@@ -1,3 +1,12 @@
+
+
+![image-20200217140314796](asset/image-20200217140314796.png)
+
+- 掌握四种sql语句
+- 能在**nodejs中写代码来运行sql**语句
+
+
+
 # mysql数据库
 
 ## 数据库简介
@@ -168,6 +177,12 @@ phpstudy[下载](https://www.xp.cn/) ，安装
 
 
 
+
+
+![image-20200217141614917](asset/image-20200217141614917.png)
+
+
+
 ### 连接不上怎么办？
 
 - 是否打开了mysql服务器。
@@ -277,6 +292,8 @@ update stu set weight = 60
 
 
 ### 数据查询
+
+作用：是把数据从数据库查出来
 
 格式: 
 
@@ -597,7 +614,9 @@ CREATE TABLE IF NOT EXISTS `student` (
 
 # node操作mysql
 
-通过mysql这个包来操作mysql数据库。mysql模块是一个第三方模块，专门用来操作MySQL数据库。 
+通过mysql这个包来操作mysql数据库。
+
+mysql模块是一个第三方模块，专门用来操作MySQL数据库。 
 
 ```shell
 # 安装
